@@ -28,6 +28,15 @@ const checkError = (err, res, funcName) => {
   }));
 };
 
+const checkUser = (user, res, funcName) => {
+  if (!user) {
+    return (res.status(NOT_FOUND_ERROR_CODE).send({
+      message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
+    }));
+  }
+  return res.send({ user });
+};
+
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ users }))
@@ -36,7 +45,7 @@ module.exports.getAllUsers = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => res.send({ user }))
+    .then((user) => checkUser(user, res, 'getUserById'))
     .catch((err) => checkError(err, res, 'getUserById'));
 };
 
