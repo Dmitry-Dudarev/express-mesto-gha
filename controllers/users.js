@@ -5,7 +5,8 @@ const NOT_FOUND_ERROR_CODE = 404;
 const ANOTHER_ERROR_CODE = 500;
 
 const errorMessages = {
-  getUserById404: 'Пользователь по указанному _id не найден.',
+  getUserById400: 'Пользователь по указанному _id не найден.',
+
   createUser400: 'Переданы некорректные данные при создании пользователя.',
   updateUser400: 'Переданы некорректные данные при обновлении профиля.',
   updateUser404: 'Пользователь с указанным _id не найден.',
@@ -13,12 +14,23 @@ const errorMessages = {
   updateAvatar404: 'Пользователь с указанным _id не найден.',
 };
 
+// const checkError = (err, res, funcName) => {
+//   if (err.name === 'CastError') {
+//     return (res.status(NOT_FOUND_ERROR_CODE).send({
+//       message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
+//     }));
+//   } if (err.name === 'ValidationError') {
+//     return (res.status(VALIDATION_ERROR_CODE).send({
+//       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
+//     }));
+//   }
+//   return (res.status(ANOTHER_ERROR_CODE).send({
+//     message: 'На сервере произошла ошибка',
+//   }));
+// };
+
 const checkError = (err, res, funcName) => {
-  if (err.name === 'CastError') {
-    return (res.status(NOT_FOUND_ERROR_CODE).send({
-      message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
-    }));
-  } if (err.name === 'ValidationError') {
+  if (err.name === 'CastError' || err.name === 'ValidationError') {
     return (res.status(VALIDATION_ERROR_CODE).send({
       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
     }));
