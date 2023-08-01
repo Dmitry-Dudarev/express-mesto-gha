@@ -13,21 +13,6 @@ const errorMessages = {
   removeLike404: 'Передан несуществующий _id карточки.',
 };
 
-// const checkError = (err, res, funcName) => {
-//   if (err.name === 'CastError') {
-//     return (res.status(NOT_FOUND_ERROR_CODE).send({
-//       message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
-//     }));
-//   } if (err.name === 'ValidationError') {
-//     return (res.status(VALIDATION_ERROR_CODE).send({
-//       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
-//     }));
-//   }
-//   return (res.status(ANOTHER_ERROR_CODE).send({
-//     message: 'На сервере произошла ошибка',
-//   }));
-// };
-
 const checkError = (err, res, funcName) => {
   if (err.name === 'CastError' || err.name === 'ValidationError') {
     return (res.status(VALIDATION_ERROR_CODE).send({
