@@ -8,17 +8,28 @@ const errorMessages = {
   addNewCard400: 'Переданы некорректные данные при создании карточки.',
   deleteCard404: 'Карточка с указанным _id не найдена.',
   addLike400: 'Переданы некорректные данные для постановки лайка.',
-  addLike404: 'Передан несуществующий _id карточки / пользователя.',
+  addLike404: 'Передан несуществующий _id карточки.',
   removeLike400: 'Переданы некорректные данные для снятия лайка.',
-  removeLike404: 'Передан несуществующий _id карточки / пользователя.',
+  removeLike404: 'Передан несуществующий _id карточки.',
 };
 
+// const checkError = (err, res, funcName) => {
+//   if (err.name === 'CastError') {
+//     return (res.status(NOT_FOUND_ERROR_CODE).send({
+//       message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
+//     }));
+//   } if (err.name === 'ValidationError') {
+//     return (res.status(VALIDATION_ERROR_CODE).send({
+//       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
+//     }));
+//   }
+//   return (res.status(ANOTHER_ERROR_CODE).send({
+//     message: 'На сервере произошла ошибка',
+//   }));
+// };
+
 const checkError = (err, res, funcName) => {
-  if (err.name === 'CastError') {
-    return (res.status(NOT_FOUND_ERROR_CODE).send({
-      message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
-    }));
-  } if (err.name === 'ValidationError') {
+  if (err.name === 'CastError' || err.name === 'ValidationError') {
     return (res.status(VALIDATION_ERROR_CODE).send({
       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
     }));
