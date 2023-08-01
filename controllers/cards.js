@@ -28,6 +28,15 @@ const checkError = (err, res, funcName) => {
   }));
 };
 
+const checkCard = (card, res, funcName) => {
+  if (!card) {
+    return (res.status(NOT_FOUND_ERROR_CODE).send({
+      message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
+    }));
+  }
+  return res.send({ card });
+};
+
 module.exports.getAllCards = (req, res) => {
   Card.find({})
     .then((cards) => res.send({ cards }))
@@ -54,7 +63,7 @@ module.exports.addLike = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send({ card }))
+    .then((card) => checkCard(card, res, 'addLike'))
     .catch((err) => checkError(err, res, 'addLike'));
 };
 
@@ -64,6 +73,6 @@ module.exports.removeLike = (req, res) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .then((card) => res.send({ card }))
+    .then((card) => checkCard(card, res, 'removeLike'))
     .catch((err) => checkError(err, res, 'removeLike'));
 };
