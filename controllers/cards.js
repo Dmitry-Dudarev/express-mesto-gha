@@ -53,7 +53,7 @@ module.exports.addNewCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ card }))
+    .then((card) => checkCard(card, res, 'deleteCard'))
     .catch((err) => checkError(err, res, 'deleteCard'));
 };
 //
