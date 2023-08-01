@@ -12,13 +12,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.get('/cards', getAllCards);
-
 router.post('/cards', addNewCard);
-
 router.delete('/cards/:cardId', deleteCard);
-
 router.put('/cards/:cardId/likes', addLike);
-
 router.delete('/cards/:cardId/likes', removeLike);
 
 module.exports = router;
