@@ -1,5 +1,6 @@
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-error');
+const OwnershipError = require('../errors/ownership-error');
 
 const VALIDATION_ERROR_CODE = 400;
 // const NOT_FOUND_ERROR_CODE = 404;
@@ -49,17 +50,20 @@ module.exports.addNewCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    // .then((card) => checkCard(card, res, 'deleteCard'))
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка с указанным _id не найдена.');
       }
-      return res.send({ card });
+      if (String(req.user._id) !== String(card.owner)) {
+        throw new OwnershipError('Вы не можете удалять карточки, созданные другими пользователями');
+      }
+      return Card.findByIdAndRemove(req.params.cardId)
+        .then((deletedCard) => res.send({ deletedCard }));
     })
     .catch(next);
 };
-//
+
 module.exports.addLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
