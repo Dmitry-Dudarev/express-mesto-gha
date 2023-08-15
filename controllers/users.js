@@ -53,7 +53,13 @@ module.exports.createUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-  const { password, ...newUser } = user._doc;
+  const newUser = {
+    _id: user._id,
+    name: user.name,
+    about: user.about,
+    avatar: user.avatar,
+    email: user.email,
+  };
   return res.send({ newUser });
 };
 
