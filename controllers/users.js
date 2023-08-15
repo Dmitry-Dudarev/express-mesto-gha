@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const ValidationError = require('../errors/validation-error');
 const NotFoundError = require('../errors/not-found-error');
 const EmailDuplicationError = require('../errors/email-duplication-error');
 
@@ -16,7 +15,7 @@ module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        throw new ValidationError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
       return res.send({ user });
     })

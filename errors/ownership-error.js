@@ -1,4 +1,4 @@
-const INVALID_OWNERSHIP_ERROR_CODE = 404;
+const INVALID_OWNERSHIP_ERROR_CODE = 403;
 
 class OwnershipError extends Error {
   constructor(message) {
