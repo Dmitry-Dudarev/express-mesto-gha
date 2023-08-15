@@ -18,17 +18,10 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64d93cd33bfe5ad8fade9305',
-  };
-  next();
-});
-
 app.post('/signin', login);
 app.post('/signup', createUser);
 
-// app.use(auth);
+app.use(auth);
 app.use('/', cardRouters);
 app.use('/', userRouters);
 app.use((req, res, next) => {

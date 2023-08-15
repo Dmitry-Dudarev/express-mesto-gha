@@ -14,10 +14,10 @@ const {
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get('/users', getAllUsers);
-router.get('/users/:userId', getUserById);
 router.get('/users/me', getCurrentUserData);
+router.get('/users', getAllUsers);
 router.patch('/users/me', updateUser);
 router.patch('/users/me/avatar', updateAvatar);
+router.get('/users/:userId', getUserById);
 
 module.exports = router;

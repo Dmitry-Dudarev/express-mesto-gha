@@ -4,7 +4,7 @@ const LoginError = require('../errors/login-error');
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new LoginError('Пройдите авторизацию');
+    throw new LoginError('Нет заголовка');
   }
   const token = authorization.replace('Bearer ', '');
   let payload;
