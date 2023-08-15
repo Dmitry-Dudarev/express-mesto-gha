@@ -28,29 +28,25 @@ app.post('/signin', celebrate({
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
-    avatar: Joi.string().pattern(/^https?:\/\/(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+\.{1}[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+#?$/i).required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().pattern(/^https?:\/\/(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+\.{1}[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+#?$/i),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
 }), createUser);
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '64dac139f1bd230482156f50'
-//   };
 
-//   next();
-// });
 app.use(auth);
 app.use('/', cardRouters);
 app.use('/', userRouters);
+
 app.use((req, res, next) => {
   res.status(NOT_FOUND_ERROR_CODE).send({ message: 'Страница не найдена' });
   next();
 });
+
 app.use(errors());
-// централизованный обработчик ошибок
+
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({

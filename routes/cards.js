@@ -1,7 +1,5 @@
 const router = require('express').Router();
-
 const { celebrate, Joi } = require('celebrate');
-
 const bodyParser = require('body-parser');
 const {
   getAllCards,

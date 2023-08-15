@@ -4,24 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ValidationError = require('../errors/validation-error');
 const NotFoundError = require('../errors/not-found-error');
-// const LoginError = require('../errors/login-error');
 const EmailDuplicationError = require('../errors/email-duplication-error');
-
-// const VALIDATION_ERROR_CODE = 400;
-// const NOT_FOUND_ERROR_CODE = 404;
-// const ANOTHER_ERROR_CODE = 500;
-// const INVALID_LOGIN_ERROR_CODE = 401;
-// const INVALID_OWNERSHIP_ERROR_CODE = 403;
-// const EMAIL_DUPLICATION_ERROR_CODE = 409;
-
-// const errorMessages = {
-//   getUserById400: 'Пользователь по указанному _id не найден.',
-//   createUser400: 'Переданы некорректные данные при создании пользователя.',
-//   updateUser400: 'Переданы некорректные данные при обновлении профиля.',
-//   updateUser404: 'Пользователь с указанным _id не найден.',
-//   updateAvatar400: 'Переданы некорректные данные при обновлении аватара.',
-//   updateAvatar404: 'Пользователь с указанным _id не найден.',
-// };
 
 module.exports.getAllUsers = (req, res, next) => {
   User.find({})
@@ -51,27 +34,6 @@ module.exports.getCurrentUserData = (req, res, next) => {
     .catch(next);
 };
 
-// module.exports.createUser = (req, res, next) => {
-//   const {
-//     name,
-//     about,
-//     avatar,
-//     email,
-//     password,
-//   } = req.body;
-//   bcrypt.hash(password, 10)
-//     .then((hash) => User.create({
-//       name,
-//       about,
-//       avatar,
-//       email,
-//       password: hash,
-//     })
-//       .then((user) => res.send({ user })))
-//     .catch(next);
-// };
-
-// верни ебучие пробелы
 module.exports.createUser = async (req, res, next) => {
   let user;
   try {
