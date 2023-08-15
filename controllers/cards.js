@@ -1,52 +1,50 @@
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-error');
 const OwnershipError = require('../errors/ownership-error');
+const ValidationError = require('../errors/validation-error');
 
-const VALIDATION_ERROR_CODE = 400;
+// const VALIDATION_ERROR_CODE = 400;
 // const NOT_FOUND_ERROR_CODE = 404;
-const ANOTHER_ERROR_CODE = 500;
+// const ANOTHER_ERROR_CODE = 500;
 
-const errorMessages = {
-  addNewCard400: 'Переданы некорректные данные при создании карточки.',
-  // deleteCard404: 'Карточка с указанным _id не найдена.',
-  addLike400: 'Переданы некорректные данные для постановки лайка.',
-  // addLike404: 'Передан несуществующий _id карточки.',
-  removeLike400: 'Переданы некорректные данные для снятия лайка.',
-  // removeLike404: 'Передан несуществующий _id карточки.',
-};
-
-const checkError = (err, res, funcName) => {
-  if (err.name === 'CastError' || err.name === 'ValidationError') {
-    return (res.status(VALIDATION_ERROR_CODE).send({
-      message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
-    }));
-  }
-  return (res.status(ANOTHER_ERROR_CODE).send({
-    message: 'На сервере произошла ошибка',
-  }));
-};
-
-// const checkCard = (card, res, funcName) => {
-//   if (!card) {
-//     return (res.status(NOT_FOUND_ERROR_CODE).send({
-//       message: `${errorMessages[funcName + NOT_FOUND_ERROR_CODE]}`,
-//     }));
-//   }
-//   return res.send({ card });
+// const errorMessages = {
+// addNewCard400: 'Переданы некорректные данные при создании карточки.',
+// deleteCard404: 'Карточка с указанным _id не найдена.',
+// addLike400: 'Переданы некорректные данные для постановки лайка.',
+// addLike404: 'Передан несуществующий _id карточки.',
+// removeLike400: 'Переданы некорректные данные для снятия лайка.',
+// removeLike404: 'Передан несуществующий _id карточки.',
 // };
 
-module.exports.getAllCards = (req, res) => {
+// const checkError = (err, res, funcName) => {
+//   if (err.name === 'CastError' || err.name === 'ValidationError') {
+//     return (res.status(VALIDATION_ERROR_CODE).send({
+//       message: `${errorMessages[funcName + VALIDATION_ERROR_CODE]}`,
+//     }));
+//   }
+//   return (res.status(ANOTHER_ERROR_CODE).send({
+//     message: 'На сервере произошла ошибка',
+//   }));
+// };
+
+module.exports.getAllCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.send({ cards }))
-    .catch((err) => checkError(err, res, 'getAllCards'));
+    .catch(next);
 };
 
-module.exports.addNewCard = (req, res) => {
+module.exports.addNewCard = (req, res, next) => {
   const { name, link } = req.body;
   const { user } = req;
   Card.create({ name, link, owner: user })
     .then((card) => res.send({ card }))
-    .catch((err) => checkError(err, res, 'addNewCard'));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        const error = new ValidationError('Переданы некорректные данные при создании карточки.');
+        next(error);
+      }
+      next(err);
+    });
 };
 
 module.exports.deleteCard = (req, res, next) => {
@@ -58,7 +56,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (String(req.user._id) !== String(card.owner)) {
         throw new OwnershipError('Вы не можете удалять карточки, созданные другими пользователями');
       }
-      return Card.findByIdAndRemove(req.params.cardId)
+      Card.findByIdAndRemove(req.params.cardId)
         .then((deletedCard) => res.send({ deletedCard }));
     })
     .catch(next);
