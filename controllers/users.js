@@ -53,7 +53,8 @@ module.exports.createUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-  return res.send({ user });
+  const { password, ...newUser } = user._doc;
+  return res.send({ newUser });
 };
 
 module.exports.updateUser = (req, res, next) => {
