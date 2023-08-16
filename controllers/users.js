@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const EmailDuplicationError = require('../errors/email-duplication-error');
+const ValidationError = require('../errors/validation-error');
 
 module.exports.getAllUsers = (req, res, next) => {
   User.find({})
@@ -44,23 +45,29 @@ module.exports.createUser = async (req, res, next) => {
       user = await User.create({
         name, about, avatar, email, password: hash,
       });
+      const newUser = {
+        _id: user._id,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      };
+      res.send({ newUser });
     } catch (err) {
       if (err.code === 11000) {
         const error = new EmailDuplicationError('Пользователь с такой почтой существует');
         next(error);
       }
+      if (err.name === 'ValidationError') {
+        const error = new ValidationError('Некорректные данные пользователя');
+        next(error);
+      } else {
+        next(err);
+      }
     }
   } catch (err) {
     next(err);
   }
-  const newUser = {
-    _id: user._id,
-    name: user.name,
-    about: user.about,
-    avatar: user.avatar,
-    email: user.email,
-  };
-  return res.send({ newUser });
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -75,7 +82,14 @@ module.exports.updateUser = (req, res, next) => {
       }
       res.send({ user });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        const error = new ValidationError('Некорректные данные пользователя');
+        next(error);
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -90,7 +104,14 @@ module.exports.updateAvatar = (req, res, next) => {
       }
       res.send({ user });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        const error = new ValidationError('Некорректные данные ссылки на аватар');
+        next(error);
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.login = (req, res, next) => {

@@ -7,8 +7,7 @@ const { login, createUser } = require('./controllers/users');
 const userRouters = require('./routes/users');
 const cardRouters = require('./routes/cards');
 const auth = require('./middlewares/auth');
-
-const NOT_FOUND_ERROR_CODE = 404;
+const NotFoundError = require('./errors/not-found-error');
 
 const { PORT = 3000 } = process.env;
 
@@ -41,8 +40,8 @@ app.use('/', cardRouters);
 app.use('/', userRouters);
 
 app.use((req, res, next) => {
-  res.status(NOT_FOUND_ERROR_CODE).send({ message: 'Страница не найдена' });
-  next();
+  const error = new NotFoundError('Страница не найдена');
+  next(error);
 });
 
 app.use(errors());

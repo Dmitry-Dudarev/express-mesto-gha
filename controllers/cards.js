@@ -18,8 +18,9 @@ module.exports.addNewCard = (req, res, next) => {
       if (err.name === 'ValidationError') {
         const error = new ValidationError('Переданы некорректные данные при создании карточки.');
         next(error);
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -33,7 +34,8 @@ module.exports.deleteCard = (req, res, next) => {
         throw new OwnershipError('Вы не можете удалять карточки, созданные другими пользователями');
       }
       Card.findByIdAndRemove(req.params.cardId)
-        .then((deletedCard) => res.send({ deletedCard }));
+        .then((deletedCard) => res.send({ deletedCard }))
+        .catch(next);
     })
     .catch(next);
 };
