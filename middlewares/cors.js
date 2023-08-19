@@ -3,7 +3,6 @@ const cors = require('cors');
 const allowedCors = [
   'https://front746.nomoreparties.co',
   'http://front746.nomoreparties.co',
-  'localhost:3000',
 ];
 
 const corsSettings = {
