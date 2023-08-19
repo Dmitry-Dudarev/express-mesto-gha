@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
+const cors = require('cors');
 
 const { login, createUser } = require('./controllers/users');
 const userRouters = require('./routes/users');
@@ -9,21 +10,26 @@ const cardRouters = require('./routes/cards');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-error');
 
+const allowedCors = [
+  'https://front746.nomoreparties.co',
+  'http://front746.nomoreparties.co',
+  'localhost:3000',
+];
+
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
-// mongoose.connect('mongodb://localhost:27017/mestodb', {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   useFindAndModify: false,
-//   useUnifiedTopology: true,
-// });
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(cors({
+  origin: allowedCors,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  allowedHeaders: '*',
+}));
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
