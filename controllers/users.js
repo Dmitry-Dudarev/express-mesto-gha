@@ -29,7 +29,7 @@ module.exports.getCurrentUserData = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Сбой при получении данных');
       }
-      return res.send({ user });
+      return res.send({ data: user });
     })
     .catch(next);
 };
