@@ -12,8 +12,7 @@ const bodyParser = require('body-parser');
 const complexRouters = require('./routes/index');
 
 const cors = require('./middlewares/cors');
-const NotFoundError = require('./errors/not-found-error');
-
+// const NotFoundError = require('./errors/not-found-error');
 
 const { PORT = 3000 } = process.env;
 
@@ -38,7 +37,9 @@ app.use(complexRouters);
 //   body: Joi.object().keys({
 //     name: Joi.string().min(2).max(30),
 //     about: Joi.string().min(2).max(30),
-//     avatar: Joi.string().pattern(/^https?:\/\/(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+\.{1}[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+#?$/i),
+//     avatar: Joi.string().pattern(
+// /^https?:\/\/(www\.)?[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+\.{1}[a-z0-9\-._~:/?#[\]@!$&'()*+,;=]+#?$/i
+// ),
 //     email: Joi.string().email().required(),
 //     password: Joi.string().required(),
 //   }),

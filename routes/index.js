@@ -1,8 +1,8 @@
+const { celebrate, Joi, errors } = require('celebrate');
 const router = require('express').Router();
 const userRouters = require('./users');
 const cardRouters = require('./cards');
 const auth = require('../middlewares/auth');
-const { celebrate, Joi, errors } = require('celebrate');
 
 const { createUser, login } = require('../controllers/users');
 

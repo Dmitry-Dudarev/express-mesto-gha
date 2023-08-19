@@ -10,6 +10,6 @@ const corsSettings = {
   origin: allowedCors,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   allowedHeaders: '*',
-}
+};
 
 module.exports = (cors(corsSettings));
