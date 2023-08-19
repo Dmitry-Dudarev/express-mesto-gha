@@ -1,4 +1,4 @@
-const NOT_FOUND_ERROR_CODE = 404;
+const { NOT_FOUND_ERROR_CODE = 404 } = process.env;
 
 class NotFoundError extends Error {
   constructor(message) {

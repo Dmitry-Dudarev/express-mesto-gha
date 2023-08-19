@@ -1,4 +1,4 @@
-const LOGIN_ERROR_CODE = 401;
+const { LOGIN_ERROR_CODE = 401 } = process.env;
 
 class LoginError extends Error {
   constructor(message) {

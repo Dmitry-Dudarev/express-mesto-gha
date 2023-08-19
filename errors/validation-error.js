@@ -1,4 +1,4 @@
-const VALIDATION_ERROR_CODE = 400;
+const { VALIDATION_ERROR_CODE = 400 } = process.env;
 
 class ValidationError extends Error {
   constructor(message, kind) {

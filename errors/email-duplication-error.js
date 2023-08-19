@@ -1,4 +1,4 @@
-const EMAIL_DUPLICATION_ERROR_CODE = 409;
+const { EMAIL_DUPLICATION_ERROR_CODE = 409 } = process.env;
 
 class EmailDuplicationError extends Error {
   constructor(message) {

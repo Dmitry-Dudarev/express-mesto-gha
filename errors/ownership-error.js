@@ -1,4 +1,4 @@
-const INVALID_OWNERSHIP_ERROR_CODE = 403;
+const { INVALID_OWNERSHIP_ERROR_CODE = 403 } = process.env;
 
 class OwnershipError extends Error {
   constructor(message) {
