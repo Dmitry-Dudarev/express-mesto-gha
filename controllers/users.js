@@ -52,7 +52,7 @@ module.exports.createUser = async (req, res, next) => {
         avatar: user.avatar,
         email: user.email,
       };
-      res.send({ newUser });
+      res.status(201).send({ newUser });
     } catch (err) {
       if (err.code === 11000) {
         const error = new EmailDuplicationError('Пользователь с такой почтой существует');
