@@ -58,7 +58,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new OwnershipError('Вы не можете удалять карточки, созданные другими пользователями');
       }
       Card.findByIdAndRemove(req.params.cardId)
-        .then((deletedCard) => res.status(200).send(deletedCard))
+        .then(() => res.status(200).send('Пост удален'))
         .catch(next);
     })
     .catch(next);
