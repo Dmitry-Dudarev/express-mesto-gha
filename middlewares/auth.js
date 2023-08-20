@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const LoginError = require('../errors/login-error');
 
@@ -9,7 +10,8 @@ module.exports = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, 'secret-key');
+    const { NODE_ENV, JWT_SECRET } = process.env;
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key');
   } catch (err) {
     const error = new LoginError('Пройдите авторизацию');
     next(error);
