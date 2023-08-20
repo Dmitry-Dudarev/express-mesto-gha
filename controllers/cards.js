@@ -9,11 +9,27 @@ module.exports.getAllCards = (req, res, next) => {
     .catch(next);
 };
 
+// module.exports.addNewCard = (req, res, next) => {
+//   const { name, link } = req.body;
+//   const { user } = req;
+//   Card.create({ name, link, owner: user })
+//     .then((card) => res.send({ card }))
+//     .catch((err) => {
+//       if (err.name === 'ValidationError') {
+//         const error = new ValidationError('Переданы некорректные данные при создании карточки.');
+//         next(error);
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
+
 module.exports.addNewCard = (req, res, next) => {
   const { name, link } = req.body;
   const { user } = req;
   Card.create({ name, link, owner: user })
-    .then((card) => res.send({ card }))
+    .then((card) => Card.findById(card._id).populate('owner', 'name about avatar _id'))
+    .then((extendedCard) => res.send(extendedCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         const error = new ValidationError('Переданы некорректные данные при создании карточки.');
