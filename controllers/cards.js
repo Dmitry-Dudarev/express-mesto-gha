@@ -5,6 +5,14 @@ const ValidationError = require('../errors/validation-error');
 
 module.exports.getAllCards = (req, res, next) => {
   Card.find({})
+    .populate({
+      path: 'owner',
+      select: 'name about avatar _id',
+    })
+    .populate({
+      path: 'likes',
+      select: 'name about avatar _id',
+    })
     .then((cards) => res.send(cards))
     .catch(next);
 };
