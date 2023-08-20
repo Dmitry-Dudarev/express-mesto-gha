@@ -94,6 +94,8 @@ module.exports.removeLike = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .populate('owner', 'name about avatar _id')
+    .populate('likes', 'name about avatar _id')
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Передан несуществующий _id карточки.');
