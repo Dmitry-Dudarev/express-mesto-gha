@@ -33,24 +33,6 @@ module.exports.addNewCard = (req, res, next) => {
     });
 };
 
-// module.exports.deleteCard = (req, res, next) => {
-//   Card.findById(req.params.cardId)
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Карточка с указанным _id не найдена.');
-//       }
-//       if (String(req.user._id) !== String(card.owner)) {
-//         throw new OwnershipError(
-// 'Вы не можете удалять карточки, созданные другими пользователями'
-// );
-//       }
-//       Card.findByIdAndRemove(req.params.cardId)
-//         .then(() => res.status(200).send({ message: 'Пост удален' }))
-//         .catch(next);
-//     })
-//     .catch(next);
-// };
-
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {

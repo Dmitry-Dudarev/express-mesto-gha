@@ -1,6 +1,6 @@
+const express = require('express');
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const bodyParser = require('body-parser');
 const {
   getAllUsers,
   getUserById,
@@ -9,8 +9,8 @@ const {
   getCurrentUserData,
 } = require('../controllers/users');
 
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
+router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
 
 router.get('/users/me', getCurrentUserData);
 router.get('/users', getAllUsers);
