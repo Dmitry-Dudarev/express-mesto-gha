@@ -17,21 +17,6 @@ module.exports.getAllCards = (req, res, next) => {
     .catch(next);
 };
 
-// module.exports.addNewCard = (req, res, next) => {
-//   const { name, link } = req.body;
-//   const { user } = req;
-//   Card.create({ name, link, owner: user })
-//     .then((card) => res.send({ card }))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         const error = new ValidationError('Переданы некорректные данные при создании карточки.');
-//         next(error);
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
-
 module.exports.addNewCard = (req, res, next) => {
   const { name, link } = req.body;
   const { user } = req;
@@ -63,21 +48,6 @@ module.exports.deleteCard = (req, res, next) => {
     })
     .catch(next);
 };
-
-// module.exports.addLike = (req, res, next) => {
-//   Card.findByIdAndUpdate(
-//     req.params.cardId,
-//     { $addToSet: { likes: req.user._id } },
-//     { new: true },
-//   )
-//     .then((card) => {
-//       if (!card) {
-//         throw new NotFoundError('Передан несуществующий _id карточки.');
-//       }
-//       return res.send({ card });
-//     })
-//     .catch(next);
-// };
 
 module.exports.addLike = (req, res, next) => {
   Card.findByIdAndUpdate(

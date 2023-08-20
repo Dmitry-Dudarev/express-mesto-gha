@@ -3,10 +3,13 @@ const router = require('express').Router();
 const userRouters = require('./users');
 const cardRouters = require('./cards');
 const auth = require('../middlewares/auth');
+const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 const { createUser, login } = require('../controllers/users');
 
 const NotFoundError = require('../errors/not-found-error');
+
+router.use(requestLogger);
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -34,6 +37,8 @@ router.use((req, res, next) => {
   const error = new NotFoundError('Страница не найдена');
   next(error);
 });
+
+router.use(errorLogger);
 
 router.use(errors());
 
