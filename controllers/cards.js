@@ -91,7 +91,7 @@ module.exports.addLike = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Передан несуществующий _id карточки.');
       }
-      return res.send({ card });
+      return res.send(card);
     })
     .catch(next);
 };
@@ -108,7 +108,7 @@ module.exports.removeLike = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Передан несуществующий _id карточки.');
       }
-      return res.send({ card });
+      return res.send(card);
     })
     .catch(next);
 };
