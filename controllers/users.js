@@ -80,7 +80,7 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
       }
-      res.send({ user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -102,7 +102,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
       }
-      res.send({ user });
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
